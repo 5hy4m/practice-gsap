@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import "./App.scss";
 import { gsap, Power3 } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 import imgGirl from "./images/girl.webp";
 import imgBoy from "./images/boy.webp";
@@ -10,11 +11,13 @@ function App() {
   const app = useRef(null);
   const images = useRef(null);
   const content = useRef(null);
+  const container = useRef(null);
 
   const tl = new gsap.timeline({ delay: 0.5 });
 
   useEffect(() => {
     gsap.to(app.current, { duration: 0, css: { visibility: "visible" } });
+    gsap.registerPlugin(ScrollTrigger);
 
     console.log(app.current);
     const girlImage = images.current.firstElementChild;
@@ -45,12 +48,25 @@ function App() {
     )
       .from(contentP, { duration: 1, opacity: 0, ease: Power3.easeOut }, 1.4)
       .from(contentButton, { duration: 1, opacity: 0, ease: Power3.easeOut }, 1.6);
-  }, [tl]);
+
+    gsap.from(container.current, {
+      scrollTrigger: {
+        trigger: document.getElementsByTagName("body"),
+        scrub: true,
+        start: "top top",
+        end: "bottom 40%",
+        markers: true,
+        toggleActions: "reverse",
+      },
+      transform: "rotateX(0deg)",
+      ease: "none",
+    });
+  }, []);
 
   return (
     <div ref={app} className="hero">
       <div className="container">
-        <div className="hero-inner">
+        <div ref={container} className="hero-inner">
           <div className="hero-content">
             <div className="hero-content-inner" ref={content}>
               <h1>
@@ -90,6 +106,7 @@ function App() {
           </div>
         </div>
       </div>
+      <div className="red"></div>
     </div>
   );
 }
