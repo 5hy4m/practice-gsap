@@ -55,7 +55,6 @@ function App() {
         scrub: true,
         start: "top top",
         end: "bottom 40%",
-        markers: true,
         toggleActions: "reverse",
       },
       transform: "rotateX(0deg)",
